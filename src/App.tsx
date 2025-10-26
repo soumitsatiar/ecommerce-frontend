@@ -1,3 +1,10 @@
+import { Button } from "./components/ui/button";
+import HomePage from "./HomePage";
+
 export default function App() {
-  return <div>hello world</div>;
+  return (
+    <div>
+      <HomePage />
+    </div>
+  );
 }
