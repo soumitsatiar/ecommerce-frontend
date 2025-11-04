@@ -1,5 +1,10 @@
 import { AppSidebar } from "@/components/AppSidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 import type { RootState } from "@/store";
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { Home, Plus } from "lucide-react";
@@ -13,12 +18,12 @@ export const Route = createFileRoute("/seller")({
 const items = [
   {
     title: "Home",
-    url: "#",
+    url: "/seller",
     icon: Home,
   },
   {
     title: "Add Products",
-    url: "#",
+    url: "/seller/addProduct",
     icon: Plus,
   },
 ];
@@ -44,10 +49,18 @@ function RouteComponent() {
     <div>
       <SidebarProvider>
         <AppSidebar items={items} />
-        <main>
-          <SidebarTrigger />
-          <Outlet />
-        </main>
+        <SidebarInset>
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator
+              orientation="vertical"
+              className="mr-2 data-[orientation=vertical]:h-4"
+            />
+          </header>
+          <div className="p-6">
+            <Outlet />
+          </div>
+        </SidebarInset>
       </SidebarProvider>
     </div>
   );

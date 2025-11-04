@@ -1,10 +1,15 @@
 import { AppSidebar } from "@/components/AppSidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 import type { RootState } from "@/store";
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Heart, Home, Search, Settings, ShoppingBag } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 export const Route = createFileRoute("/user")({
   component: RouteComponent,
 });
@@ -58,10 +63,22 @@ function RouteComponent() {
     <div>
       <SidebarProvider>
         <AppSidebar items={items} />
-        <main>
+        <SidebarInset>
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator
+              orientation="vertical"
+              className="mr-2 data-[orientation=vertical]:h-4"
+            />
+          </header>
+          <div className="p-6">
+            <Outlet />
+          </div>
+        </SidebarInset>
+        {/* <main>
           <SidebarTrigger />
           <Outlet />
-        </main>
+        </main> */}
       </SidebarProvider>
     </div>
   );
