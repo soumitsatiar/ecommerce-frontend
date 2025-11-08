@@ -52,7 +52,6 @@ function RouteComponent() {
             body: "Track your steps, heart rate, and sleep patterns with this advanced fitness tracker.",
           },
         ];
-
         setProducts(response.data || mockProducts);
       } catch (error) {
         console.error("Error fetching products:", error);

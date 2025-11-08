@@ -1,11 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Field,
   FieldContent,
-  FieldDescription,
   FieldError,
   FieldLabel,
 } from "@/components/ui/field";
@@ -13,21 +12,35 @@ import { Textarea } from "@/components/ui/textarea";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import axiosInstance from "@/utils/axios";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export const Route = createFileRoute("/seller/addProduct")({
   component: RouteComponent,
 });
 
+interface Tag {
+  id: string;
+  name: string;
+}
+
 interface ProductFormData {
   title: string;
   description: string;
   price: string;
+  tagId: string;
 }
 
 interface FormErrors {
   title?: string;
   description?: string;
   price?: string;
+  tagId?: string;
 }
 
 function RouteComponent() {
@@ -35,10 +48,27 @@ function RouteComponent() {
     title: "",
     description: "",
     price: "",
+    tagId: "",
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const resp = await axiosInstance.get("/seller/getTags");
+        setTags(resp.data || []);
+      } catch (error) {
+        console.error("Error fetching tags:", error);
+      }
+    };
+    fetchTags().finally(() => {
+      setLoading(false);
+    });
+  }, []);
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -61,6 +91,10 @@ function RouteComponent() {
       newErrors.price = "Price must be a valid number";
     } else if (Number(formData.price) <= 0) {
       newErrors.price = "Price must be greater than 0";
+    }
+
+    if (!formData.tagId) {
+      newErrors.tagId = "Please select a tag";
     }
 
     setErrors(newErrors);
@@ -87,6 +121,7 @@ function RouteComponent() {
         productName: formData.title,
         body: formData.description,
         price: Number(formData.price),
+        tagId: formData.tagId,
       };
 
       console.log(product);
@@ -95,7 +130,7 @@ function RouteComponent() {
       await axiosInstance.post("/seller/create/product", product);
 
       // Reset form on success
-      setFormData({ title: "", description: "", price: "" });
+      setFormData({ title: "", description: "", price: "", tagId: "" });
       setErrors({});
 
       toast.success("Product added successfully!");
@@ -108,7 +143,9 @@ function RouteComponent() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -118,6 +155,10 @@ function RouteComponent() {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -184,6 +225,34 @@ function RouteComponent() {
           </FieldContent>
         </Field>
 
+        <Field data-invalid={!!errors.tagId}>
+          <FieldContent>
+            <FieldLabel htmlFor="tagId">Category</FieldLabel>
+            <Select
+              value={formData.tagId}
+              onValueChange={(value) => {
+                setFormData((prev) => ({ ...prev, tagId: value }));
+                if (errors.tagId) {
+                  setErrors((prev) => ({ ...prev, tagId: undefined }));
+                }
+              }}
+              disabled={isSubmitting}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select a category" />
+              </SelectTrigger>
+              <SelectContent>
+                {tags.map((tag) => (
+                  <SelectItem key={tag.id} value={tag.id}>
+                    {tag.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.tagId && <FieldError>{errors.tagId}</FieldError>}
+          </FieldContent>
+        </Field>
+
         <div className="flex gap-4 pt-4">
           <Button type="submit" disabled={isSubmitting} className="flex-1">
             {isSubmitting ? <Spinner /> : "Add Product"}
@@ -192,7 +261,7 @@ function RouteComponent() {
             type="button"
             variant="outline"
             onClick={() => {
-              setFormData({ title: "", description: "", price: "" });
+              setFormData({ title: "", description: "", price: "", tagId: "" });
               setErrors({});
             }}
             disabled={isSubmitting}
