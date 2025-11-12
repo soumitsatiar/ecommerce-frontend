@@ -50,7 +50,7 @@ export function AppSidebar({ items }: { items: itemsType }) {
 
   const handleLogout = async () => {
     try {
-      const res = await axiosInstance.post("/auth/logout");
+      await axiosInstance.post("/auth/logout");
       dispatch(logout());
       navigate({ to: "/" });
     } catch (error) {}

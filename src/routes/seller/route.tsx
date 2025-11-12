@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/sidebar";
 import type { RootState } from "@/store";
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
-import { Home, Plus } from "lucide-react";
+import { Handbag, Home, Plus } from "lucide-react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
@@ -20,6 +20,11 @@ const items = [
     title: "Home",
     url: "/seller",
     icon: Home,
+  },
+  {
+    title: "Products",
+    url: "/seller/products",
+    icon: Handbag,
   },
   {
     title: "Add Products",

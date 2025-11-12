@@ -59,7 +59,7 @@ function RouteComponent() {
   useEffect(() => {
     const fetchTags = async () => {
       try {
-        const resp = await axiosInstance.get("/seller/getTags");
+        const resp = await axiosInstance.get("/admin/tag/all");
         setTags(resp.data || []);
       } catch (error) {
         console.error("Error fetching tags:", error);
