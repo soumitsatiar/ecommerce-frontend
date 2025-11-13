@@ -1,4 +1,4 @@
-import { Home } from "lucide-react";
+import { Home, LogOut } from "lucide-react";
 
 import {
   Sidebar,
@@ -23,6 +23,12 @@ import {
   ItemTitle,
 } from "@/components/ui/item";
 import { Button } from "./ui/button";
+import { ItemActions } from "@/components/ui/item";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 
 import axiosInstance from "@/utils/axios";
@@ -86,7 +92,7 @@ export function AppSidebar({ items }: { items: itemsType }) {
       </SidebarContent>
 
       <SidebarFooter>
-        <Item variant="outline">
+        <Item variant="muted" size="sm">
           <ItemMedia>
             <Avatar className="size-10">
               <AvatarFallback>
@@ -102,9 +108,22 @@ export function AppSidebar({ items }: { items: itemsType }) {
             </ItemTitle>
             <ItemDescription>{auth.user?.email}</ItemDescription>
           </ItemContent>
-          <Button className="w-full mt-4 bg-red-500" onClick={handleLogout}>
-            Logout
-          </Button>
+          <ItemActions>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-muted-foreground hover:text-red-600 cursor-pointer"
+                  aria-label="Logout"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="size-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right">Logout</TooltipContent>
+            </Tooltip>
+          </ItemActions>
         </Item>
       </SidebarFooter>
     </Sidebar>

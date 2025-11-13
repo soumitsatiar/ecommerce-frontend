@@ -5,6 +5,7 @@ type Product = {
   id: string;
   productName: string;
   price: number;
+  quantity: number;
   body: string;
 };
 

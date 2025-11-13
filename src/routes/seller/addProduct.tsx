@@ -33,6 +33,7 @@ interface ProductFormData {
   title: string;
   description: string;
   price: string;
+  quantity: string;
   tagId: string;
 }
 
@@ -40,6 +41,7 @@ interface FormErrors {
   title?: string;
   description?: string;
   price?: string;
+  quantity?: string;
   tagId?: string;
 }
 
@@ -48,6 +50,7 @@ function RouteComponent() {
     title: "",
     description: "",
     price: "",
+    quantity: "",
     tagId: "",
   });
 
@@ -93,6 +96,17 @@ function RouteComponent() {
       newErrors.price = "Price must be greater than 0";
     }
 
+    if (!formData.quantity.trim()) {
+      newErrors.quantity = "Quantity is required";
+    } else {
+      const q = Number(formData.quantity);
+      if (!Number.isInteger(q) || isNaN(q)) {
+        newErrors.quantity = "Quantity must be an integer";
+      } else if (q < 0) {
+        newErrors.quantity = "Quantity cannot be negative";
+      }
+    }
+
     if (!formData.tagId) {
       newErrors.tagId = "Please select a tag";
     }
@@ -121,6 +135,7 @@ function RouteComponent() {
         productName: formData.title,
         body: formData.description,
         price: Number(formData.price),
+        quantity: Number(formData.quantity),
         tagId: formData.tagId,
       };
 
@@ -130,7 +145,13 @@ function RouteComponent() {
       await axiosInstance.post("/seller/create/product", product);
 
       // Reset form on success
-      setFormData({ title: "", description: "", price: "", tagId: "" });
+      setFormData({
+        title: "",
+        description: "",
+        price: "",
+        quantity: "",
+        tagId: "",
+      });
       setErrors({});
 
       toast.success("Product added successfully!");
@@ -157,7 +178,11 @@ function RouteComponent() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center">
+        <Spinner className="size-8" />
+      </div>
+    );
   }
 
   return (
@@ -225,6 +250,26 @@ function RouteComponent() {
           </FieldContent>
         </Field>
 
+        <Field data-invalid={!!errors.quantity}>
+          <FieldContent>
+            <FieldLabel htmlFor="quantity">Quantity</FieldLabel>
+
+            <Input
+              id="quantity"
+              name="quantity"
+              type="number"
+              min={0}
+              step={1}
+              placeholder="e.g., 10"
+              value={formData.quantity}
+              onChange={handleChange}
+              aria-invalid={!!errors.quantity}
+              disabled={isSubmitting}
+            />
+            {errors.quantity && <FieldError>{errors.quantity}</FieldError>}
+          </FieldContent>
+        </Field>
+
         <Field data-invalid={!!errors.tagId}>
           <FieldContent>
             <FieldLabel htmlFor="tagId">Category</FieldLabel>
@@ -261,7 +306,13 @@ function RouteComponent() {
             type="button"
             variant="outline"
             onClick={() => {
-              setFormData({ title: "", description: "", price: "", tagId: "" });
+              setFormData({
+                title: "",
+                description: "",
+                price: "",
+                quantity: "",
+                tagId: "",
+              });
               setErrors({});
             }}
             disabled={isSubmitting}

@@ -14,7 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Edit, Plus, Trash2, Package } from "lucide-react";
+import { Plus, Trash2, Package } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import axiosInstance from "@/utils/axios";
@@ -25,6 +25,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import EditProduct from "@/components/EditProduct";
 
 export const Route = createFileRoute("/seller/products")({
   component: RouteComponent,
@@ -53,42 +54,50 @@ function RouteComponent() {
 
   if (loading) {
     return (
-      <Table>
-        <TableCaption>A list of your products.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Product Name</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Quantity</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {Array.from({ length: 6 }).map((_, i) => (
-            <TableRow key={i}>
-              <TableCell className="font-medium">
-                <Skeleton className="h-4 w-40" />
-              </TableCell>
-              <TableCell>
-                <Skeleton className="h-4 w-[70%]" />
-              </TableCell>
-              <TableCell>
-                <Skeleton className="h-4 w-16" />
-              </TableCell>
-              <TableCell>
-                <Skeleton className="h-4 w-10" />
-              </TableCell>
-              <TableCell>
-                <div className="flex gap-2">
-                  <Skeleton className="h-8 w-20" />
-                  <Skeleton className="h-8 w-24" />
-                </div>
-              </TableCell>
+      <div>
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl font-bold mb-4">Your Products</h1>
+          <Button>
+            <Plus /> Add New Product
+          </Button>
+        </div>
+        <Table>
+          <TableCaption>A list of your products.</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Product Name</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead>Price</TableHead>
+              <TableHead>Quantity</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <TableRow key={i}>
+                <TableCell className="font-medium">
+                  <Skeleton className="h-4 w-40" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[70%]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-16" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-10" />
+                </TableCell>
+                <TableCell>
+                  <div className="flex gap-2">
+                    <Skeleton className="h-8 w-20" />
+                    <Skeleton className="h-8 w-24" />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     );
   }
 
@@ -151,13 +160,10 @@ function RouteComponent() {
               </TableCell>
               <TableCell>{product.body}</TableCell>
               <TableCell>{product.price}</TableCell>
-              <TableCell>{1}</TableCell>
+              <TableCell>{product.quantity}</TableCell>
               <TableCell>
                 <div className="flex gap-2">
-                  <Button size={"sm"} className="cursor-pointer">
-                    <Edit size={16} />
-                    Edit
-                  </Button>
+                  <EditProduct product={product} />
                   <Button
                     size={"sm"}
                     variant="destructive"
