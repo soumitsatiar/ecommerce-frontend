@@ -7,6 +7,10 @@ type Product = {
   price: number;
   quantity: number;
   body: string;
+  tag: {
+    id: string;
+    name: string;
+  };
 };
 
 type initialStateType = {

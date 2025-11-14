@@ -39,6 +39,8 @@ function RouteComponent() {
   );
 
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
+  const [tags, setTags] = useState<{ id: string; name: string }[]>([]);
+  const [loadingTags, setLoadingTags] = useState<boolean>(true);
 
   const handleDeleteClick = async (id: string) => {
     setDeleteLoading(true);
@@ -50,9 +52,20 @@ function RouteComponent() {
 
   useEffect(() => {
     dispatch(fetchProducts());
+    const fetchTags = async () => {
+      try {
+        const resp = await axiosInstance.get("/admin/tag/all");
+        setTags(resp.data || []);
+      } catch (error) {
+        console.error("Error fetching tags:", error);
+      }
+    };
+    fetchTags().finally(() => {
+      setLoadingTags(false);
+    });
   }, [dispatch]);
 
-  if (loading) {
+  if (loading || loadingTags) {
     return (
       <div>
         <div className="flex justify-between items-center mb-4">
@@ -163,7 +176,7 @@ function RouteComponent() {
               <TableCell>{product.quantity}</TableCell>
               <TableCell>
                 <div className="flex gap-2">
-                  <EditProduct product={product} />
+                  <EditProduct product={product} tags={tags} />
                   <Button
                     size={"sm"}
                     variant="destructive"

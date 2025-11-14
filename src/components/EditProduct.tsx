@@ -21,6 +21,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { useState } from "react";
+import axiosInstance from "@/utils/axios";
+import { toast } from "sonner";
+import type { AppDispatch } from "@/store";
+import { useDispatch } from "react-redux";
+import { fetchProducts } from "@/store/features/product";
 
 type Product = {
   id: string;
@@ -28,9 +34,48 @@ type Product = {
   price: number;
   quantity: number;
   body: string;
+  tag: {
+    id: string;
+    name: string;
+  };
 };
 
-export default function EditProduct({ product }: { product: Product }) {
+export default function EditProduct({
+  product,
+  tags,
+}: {
+  product: Product;
+  tags: { id: string; name: string }[];
+}) {
+  const [productName, setProductName] = useState(product.productName);
+  const [body, setBody] = useState(product.body);
+  const [price, setPrice] = useState(product.price);
+  const [quantity, setQuantity] = useState(product.quantity);
+  const [tagId, setTagId] = useState(product.tag.id);
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleEditProduct = async () => {
+    const updatedProduct = {
+      productName,
+      body,
+      price,
+      quantity,
+      tagId,
+    };
+
+    try {
+      const res = await axiosInstance.put(
+        `/seller/product/${product.id}`,
+        updatedProduct
+      );
+      toast.success(res.data?.message || "Product updated successfully");
+      dispatch(fetchProducts());
+    } catch (error) {
+      toast.error("Failed to update product");
+    }
+  };
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -39,10 +84,10 @@ export default function EditProduct({ product }: { product: Product }) {
           Edit
         </Button>
       </AlertDialogTrigger>
+      <AlertDialogDescription></AlertDialogDescription>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{product.productName}</AlertDialogTitle>
-          {/* <AlertDialogDescription>{product.body}</AlertDialogDescription> */}
           <form className="space-y-6">
             <Field>
               <FieldContent>
@@ -53,7 +98,8 @@ export default function EditProduct({ product }: { product: Product }) {
                   name="title"
                   type="text"
                   placeholder="e.g., Wireless Bluetooth Headphones"
-                  value={product.productName}
+                  value={productName}
+                  onChange={(e) => setProductName(e.target.value)}
                 />
               </FieldContent>
             </Field>
@@ -67,7 +113,8 @@ export default function EditProduct({ product }: { product: Product }) {
                   name="description"
                   placeholder="Enter product description..."
                   rows={5}
-                  value={product.body}
+                  value={body}
+                  onChange={(e) => setBody(e.target.value)}
                 />
               </FieldContent>
             </Field>
@@ -79,9 +126,10 @@ export default function EditProduct({ product }: { product: Product }) {
                 <Input
                   id="price"
                   name="price"
-                  type="text"
+                  type="number"
                   placeholder="e.g., 99.99"
-                  value={product.price}
+                  value={price}
+                  onChange={(e) => setPrice(Number(e.target.value))}
                 />
               </FieldContent>
             </Field>
@@ -97,7 +145,8 @@ export default function EditProduct({ product }: { product: Product }) {
                   min={0}
                   step={1}
                   placeholder="e.g., 10"
-                  value={product.quantity}
+                  value={quantity}
+                  onChange={(e) => setQuantity(Number(e.target.value))}
                 />
               </FieldContent>
             </Field>
@@ -105,17 +154,16 @@ export default function EditProduct({ product }: { product: Product }) {
             <Field>
               <FieldContent>
                 <FieldLabel htmlFor="tagId">Category</FieldLabel>
-                <Select>
+                <Select defaultValue={tagId} onValueChange={setTagId}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
                   <SelectContent>
-                    {/* {tags.map((tag) => (
+                    {tags.map((tag) => (
                       <SelectItem key={tag.id} value={tag.id}>
                         {tag.name}
                       </SelectItem>
-                    ))} */}
-                    {/* <SelectItem value={product.}>Category 1</SelectItem> */}
+                    ))}
                   </SelectContent>
                 </Select>
               </FieldContent>
@@ -124,7 +172,9 @@ export default function EditProduct({ product }: { product: Product }) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Save Changes</AlertDialogAction>
+          <AlertDialogAction onClick={handleEditProduct}>
+            Save Changes
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
