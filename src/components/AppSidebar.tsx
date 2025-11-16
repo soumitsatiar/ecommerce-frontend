@@ -1,4 +1,4 @@
-import { Home, LogOut } from "lucide-react";
+import { Command, Home, LogOut, ShoppingBag, Store } from "lucide-react";
 
 import {
   Sidebar,
@@ -65,11 +65,23 @@ export function AppSidebar({ items }: { items: itemsType }) {
   console.log(items);
 
   return (
-    <Sidebar>
-      <SidebarHeader className="text-center py-4">
-        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-          Marketplace
-        </h2>
+    <Sidebar variant="inset">
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" asChild>
+              <a href="#">
+                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                  <Store className="size-4" />
+                </div>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-medium">Marketplace</span>
+                  <span className="truncate text-xs">Seller Site</span>
+                </div>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -94,7 +106,7 @@ export function AppSidebar({ items }: { items: itemsType }) {
       <SidebarFooter>
         <Item variant="muted" size="sm">
           <ItemMedia>
-            <Avatar className="size-10">
+            <Avatar className="size-12">
               <AvatarFallback>
                 {auth.user?.firstName.charAt(0) +
                   "" +

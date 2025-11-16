@@ -26,6 +26,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import EditProduct from "@/components/EditProduct";
+import AddProduct from "@/components/AddProduct";
 
 export const Route = createFileRoute("/seller/products")({
   component: RouteComponent,
@@ -71,7 +72,7 @@ function RouteComponent() {
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold mb-4">Your Products</h1>
           <Button>
-            <Plus /> Add New Product
+            <Plus /> Add Product
           </Button>
         </div>
         <Table>
@@ -128,7 +129,7 @@ function RouteComponent() {
             </div>
             <CardTitle>No products yet</CardTitle>
             <CardDescription>
-              You haven’t added any products. Create your first product to get
+              You haven't added any products. Create your first product to get
               started.
             </CardDescription>
           </CardHeader>
@@ -148,11 +149,7 @@ function RouteComponent() {
     <div>
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold mb-4">Your Products</h1>
-        <Button asChild>
-          <Link to="/seller/addProduct">
-            <Plus /> Add New Product
-          </Link>
-        </Button>
+        <AddProduct tags={tags}>Add Product</AddProduct>
       </div>
       <Table>
         <TableCaption>A list of your products.</TableCaption>
@@ -169,7 +166,13 @@ function RouteComponent() {
           {products.map((product) => (
             <TableRow key={product.id}>
               <TableCell className="font-medium">
-                {product.productName}
+                <Link
+                  to="/seller/product/$productId"
+                  params={{ productId: product.id }}
+                  className="hover:underline"
+                >
+                  {product.productName}
+                </Link>
               </TableCell>
               <TableCell>{product.body}</TableCell>
               <TableCell>{product.price}</TableCell>

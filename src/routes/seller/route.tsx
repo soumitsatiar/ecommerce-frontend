@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/sidebar";
 import type { RootState } from "@/store";
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
-import { Handbag, Home, Plus } from "lucide-react";
+import { Handbag, Home, MessageSquareText, ShoppingBag } from "lucide-react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
@@ -27,9 +27,14 @@ const items = [
     icon: Handbag,
   },
   {
-    title: "Add Products",
-    url: "/seller/addProduct",
-    icon: Plus,
+    title: "Orders",
+    url: "/seller/orders",
+    icon: ShoppingBag,
+  },
+  {
+    title: "Comments",
+    url: "/seller/comments",
+    icon: MessageSquareText,
   },
 ];
 

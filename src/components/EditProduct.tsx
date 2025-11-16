@@ -84,15 +84,14 @@ export default function EditProduct({
           Edit
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogDescription></AlertDialogDescription>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{product.productName}</AlertDialogTitle>
-          <form className="space-y-6">
+          <AlertDialogDescription></AlertDialogDescription>
+          <form className="space-y-4">
             <Field>
               <FieldContent>
                 <FieldLabel htmlFor="title">Product Title</FieldLabel>
-
                 <Input
                   id="title"
                   name="title"
@@ -107,7 +106,6 @@ export default function EditProduct({
             <Field>
               <FieldContent>
                 <FieldLabel htmlFor="description">Description</FieldLabel>
-
                 <Textarea
                   id="description"
                   name="description"
@@ -122,14 +120,18 @@ export default function EditProduct({
             <Field>
               <FieldContent>
                 <FieldLabel htmlFor="price">Price</FieldLabel>
-
                 <Input
                   id="price"
                   name="price"
-                  type="number"
+                  type="text"
                   placeholder="e.g., 99.99"
                   value={price}
-                  onChange={(e) => setPrice(Number(e.target.value))}
+                  onChange={(e) => {
+                    const res = Number(e.target.value);
+                    if (!isNaN(res)) {
+                      setPrice(res);
+                    }
+                  }}
                 />
               </FieldContent>
             </Field>
@@ -137,7 +139,6 @@ export default function EditProduct({
             <Field>
               <FieldContent>
                 <FieldLabel htmlFor="quantity">Quantity</FieldLabel>
-
                 <Input
                   id="quantity"
                   name="quantity"
@@ -171,8 +172,13 @@ export default function EditProduct({
           </form>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleEditProduct}>
+          <AlertDialogCancel className="cursor-pointer">
+            Cancel
+          </AlertDialogCancel>
+          <AlertDialogAction
+            onClick={handleEditProduct}
+            className="cursor-pointer"
+          >
             Save Changes
           </AlertDialogAction>
         </AlertDialogFooter>
