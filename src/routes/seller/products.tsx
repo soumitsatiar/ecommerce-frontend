@@ -1,5 +1,5 @@
 import type { AppDispatch, RootState } from "@/store";
-import { fetchProducts } from "@/store/features/product";
+import { fetchProducts } from "@/store/features/products";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,6 +30,11 @@ import AddProduct from "@/components/AddProduct";
 
 export const Route = createFileRoute("/seller/products")({
   component: RouteComponent,
+  loader: () => {
+    return {
+      crumb: "Products",
+    };
+  },
 });
 
 function RouteComponent() {
@@ -64,7 +69,7 @@ function RouteComponent() {
     fetchTags().finally(() => {
       setLoadingTags(false);
     });
-  }, [dispatch]);
+  }, [dispatch, products.length]);
 
   if (loading || loadingTags) {
     return (

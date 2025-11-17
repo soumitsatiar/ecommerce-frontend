@@ -13,6 +13,10 @@ export const Route = createFileRoute("/seller/")({
   component: RouteComponent,
 });
 
+export const meta = {
+  breadcrumb: () => "Home",
+};
+
 const stats = [
   {
     label: "Total Products",

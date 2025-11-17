@@ -1,5 +1,6 @@
 import axiosInstance from "@/utils/axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import type { RootState } from "..";
 
 type Product = {
   id: string;
@@ -14,44 +15,47 @@ type Product = {
 };
 
 type initialStateType = {
-  products: Product[];
+  product: Product | null;
   loading: boolean;
   error: boolean;
 };
 
 const initialState: initialStateType = {
-  products: [],
+  product: null,
   loading: true,
   error: false,
 };
 
-const fetchProducts = createAsyncThunk("product/fetchProducts", async () => {
-  const resp = await axiosInstance.get("/seller/products");
-  console.log(resp.data);
-  return resp.data;
-});
+const fetchProduct = createAsyncThunk(
+  "prod/fetchProduct",
+  async (productId: string) => {
+    const resp = await axiosInstance.get(`/seller/product/${productId}`);
+    return resp.data;
+  }
+);
 
 const productSlice = createSlice({
-  name: "product",
+  name: "prod",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchProducts.fulfilled, (state, action) => {
-      state.products = action.payload;
-      state.loading = false;
-      state.error = false;
-    });
-    builder.addCase(fetchProducts.pending, (state) => {
-      state.loading = true;
-      state.error = false;
-    });
-    builder.addCase(fetchProducts.rejected, (state) => {
-      state.loading = false;
-      state.error = true;
-    });
+    builder
+      .addCase(fetchProduct.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(fetchProduct.fulfilled, (state, action) => {
+        state.product = action.payload;
+        state.loading = false;
+        state.error = false;
+      })
+      .addCase(fetchProduct.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      });
   },
 });
 
+export const getProduct = (state: RootState) => state.product;
 export const productReducer = productSlice.reducer;
-export { fetchProducts };
-// export const { getProducts } = productSlice.actions;
+export { fetchProduct };

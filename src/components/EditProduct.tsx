@@ -26,7 +26,7 @@ import axiosInstance from "@/utils/axios";
 import { toast } from "sonner";
 import type { AppDispatch } from "@/store";
 import { useDispatch } from "react-redux";
-import { fetchProducts } from "@/store/features/product";
+import { fetchProducts } from "@/store/features/products";
 
 type Product = {
   id: string;

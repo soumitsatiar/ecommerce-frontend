@@ -1,4 +1,5 @@
 import { AppSidebar } from "@/components/AppSidebar";
+import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
@@ -13,6 +14,11 @@ import { useSelector } from "react-redux";
 
 export const Route = createFileRoute("/seller")({
   component: RouteComponent,
+  loader: () => {
+    return {
+      crumb: "Home",
+    };
+  },
 });
 
 const items = [
@@ -66,6 +72,7 @@ function RouteComponent() {
               orientation="vertical"
               className="mr-2 data-[orientation=vertical]:h-4"
             />
+            <BreadcrumbNav />
           </header>
           <div className="p-6">
             <Outlet />
