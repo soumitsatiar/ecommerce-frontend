@@ -8,7 +8,14 @@ import type { RootState } from "@/store";
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Heart, Home, Search, Settings, ShoppingBag } from "lucide-react";
+import {
+  Heart,
+  Home,
+  Search,
+  Settings,
+  ShoppingBag,
+  ShoppingCart,
+} from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 export const Route = createFileRoute("/user")({
   component: RouteComponent,
@@ -29,6 +36,11 @@ const items = [
     title: "Wishlist",
     url: "#",
     icon: Heart,
+  },
+  {
+    title: "Cart",
+    url: "/user/cart",
+    icon: ShoppingCart,
   },
   {
     title: "Search",

@@ -1,12 +1,10 @@
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { isMatch, Link, useMatches } from "@tanstack/react-router";
-import { SlashIcon } from "lucide-react";
 
 export const BreadcrumbNav = () => {
   const matches = useMatches();

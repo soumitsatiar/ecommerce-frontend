@@ -211,7 +211,6 @@ function RouteComponent() {
             {errors.title && <FieldError>{errors.title}</FieldError>}
           </FieldContent>
         </Field>
-
         <Field data-invalid={!!errors.description}>
           <FieldContent>
             <FieldLabel htmlFor="description">Description</FieldLabel>
@@ -231,7 +230,6 @@ function RouteComponent() {
             )}
           </FieldContent>
         </Field>
-
         <Field data-invalid={!!errors.price}>
           <FieldContent>
             <FieldLabel htmlFor="price">Price</FieldLabel>
@@ -249,7 +247,6 @@ function RouteComponent() {
             {errors.price && <FieldError>{errors.price}</FieldError>}
           </FieldContent>
         </Field>
-
         <Field data-invalid={!!errors.quantity}>
           <FieldContent>
             <FieldLabel htmlFor="quantity">Quantity</FieldLabel>
@@ -269,7 +266,6 @@ function RouteComponent() {
             {errors.quantity && <FieldError>{errors.quantity}</FieldError>}
           </FieldContent>
         </Field>
-
         <Field data-invalid={!!errors.tagId}>
           <FieldContent>
             <FieldLabel htmlFor="tagId">Category</FieldLabel>
@@ -297,7 +293,6 @@ function RouteComponent() {
             {errors.tagId && <FieldError>{errors.tagId}</FieldError>}
           </FieldContent>
         </Field>
-
         <div className="flex gap-4 pt-4">
           <Button type="submit" disabled={isSubmitting} className="flex-1">
             {isSubmitting ? <Spinner /> : "Add Product"}

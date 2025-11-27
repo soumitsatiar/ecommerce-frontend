@@ -14,7 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2, Package } from "lucide-react";
+import { Plus, Trash2, Package, SearchIcon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import axiosInstance from "@/utils/axios";
@@ -27,8 +27,19 @@ import {
 } from "@/components/ui/card";
 import EditProduct from "@/components/EditProduct";
 import AddProduct from "@/components/AddProduct";
+import { Input } from "@/components/ui/input";
 
-export const Route = createFileRoute("/seller/products")({
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+export const Route = createFileRoute("/seller/products/")({
   component: RouteComponent,
   loader: () => {
     return {
@@ -156,6 +167,30 @@ function RouteComponent() {
         <h1 className="text-2xl font-bold mb-4">Your Products</h1>
         <AddProduct tags={tags}>Add Product</AddProduct>
       </div>
+      <div className="flex gap-2 mb-2">
+        <div className="relative w-96">
+          <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="text"
+            placeholder="Search products..."
+            className="pl-10"
+          />
+        </div>
+
+        <div>
+          <Select defaultValue="all">
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Filter by Category" />
+            </SelectTrigger>
+            <SelectContent defaultValue={"all"}>
+              <SelectItem value="all">All Categories</SelectItem>
+              {tags.map((tag) => {
+                return <SelectItem value={tag.name}>{tag.name}</SelectItem>;
+              })}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
       <Table>
         <TableCaption>A list of your products.</TableCaption>
         <TableHeader>
@@ -172,7 +207,7 @@ function RouteComponent() {
             <TableRow key={product.id}>
               <TableCell className="font-medium">
                 <Link
-                  to="/seller/product/$productId"
+                  to="/seller/products/$productId"
                   params={{ productId: product.id }}
                   className="hover:underline"
                 >

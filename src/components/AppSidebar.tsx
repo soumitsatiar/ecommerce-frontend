@@ -65,7 +65,7 @@ export function AppSidebar({ items }: { items: itemsType }) {
   console.log(items);
 
   return (
-    <Sidebar variant="inset">
+    <Sidebar>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>

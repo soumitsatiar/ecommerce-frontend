@@ -38,8 +38,8 @@ const items = [
     icon: ShoppingBag,
   },
   {
-    title: "Comments",
-    url: "/seller/comments",
+    title: "Reviews",
+    url: "/seller/reviews",
     icon: MessageSquareText,
   },
 ];

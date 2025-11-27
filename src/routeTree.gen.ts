@@ -15,13 +15,14 @@ import { Route as SellerRouteRouteImport } from './routes/seller/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UserIndexRouteImport } from './routes/user/index'
 import { Route as SellerIndexRouteImport } from './routes/seller/index'
-import { Route as SellerProductsRouteImport } from './routes/seller/products'
+import { Route as UserCartRouteImport } from './routes/user/cart'
+import { Route as SellerReviewsRouteImport } from './routes/seller/reviews'
 import { Route as SellerOrdersRouteImport } from './routes/seller/orders'
-import { Route as SellerCommentsRouteImport } from './routes/seller/comments'
 import { Route as SellerAddProductRouteImport } from './routes/seller/addProduct'
 import { Route as AuthUserSignupRouteImport } from './routes/auth/userSignup'
 import { Route as AuthSellerSignupRouteImport } from './routes/auth/SellerSignup'
-import { Route as SellerProductProductIdRouteImport } from './routes/seller/product/$productId'
+import { Route as SellerProductsIndexRouteImport } from './routes/seller/products/index'
+import { Route as SellerProductsProductIdRouteImport } from './routes/seller/products/$productId'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -53,19 +54,19 @@ const SellerIndexRoute = SellerIndexRouteImport.update({
   path: '/',
   getParentRoute: () => SellerRouteRoute,
 } as any)
-const SellerProductsRoute = SellerProductsRouteImport.update({
-  id: '/products',
-  path: '/products',
+const UserCartRoute = UserCartRouteImport.update({
+  id: '/cart',
+  path: '/cart',
+  getParentRoute: () => UserRouteRoute,
+} as any)
+const SellerReviewsRoute = SellerReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
   getParentRoute: () => SellerRouteRoute,
 } as any)
 const SellerOrdersRoute = SellerOrdersRouteImport.update({
   id: '/orders',
   path: '/orders',
-  getParentRoute: () => SellerRouteRoute,
-} as any)
-const SellerCommentsRoute = SellerCommentsRouteImport.update({
-  id: '/comments',
-  path: '/comments',
   getParentRoute: () => SellerRouteRoute,
 } as any)
 const SellerAddProductRoute = SellerAddProductRouteImport.update({
@@ -83,9 +84,14 @@ const AuthSellerSignupRoute = AuthSellerSignupRouteImport.update({
   path: '/auth/SellerSignup',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SellerProductProductIdRoute = SellerProductProductIdRouteImport.update({
-  id: '/product/$productId',
-  path: '/product/$productId',
+const SellerProductsIndexRoute = SellerProductsIndexRouteImport.update({
+  id: '/products/',
+  path: '/products/',
+  getParentRoute: () => SellerRouteRoute,
+} as any)
+const SellerProductsProductIdRoute = SellerProductsProductIdRouteImport.update({
+  id: '/products/$productId',
+  path: '/products/$productId',
   getParentRoute: () => SellerRouteRoute,
 } as any)
 
@@ -97,12 +103,13 @@ export interface FileRoutesByFullPath {
   '/auth/SellerSignup': typeof AuthSellerSignupRoute
   '/auth/userSignup': typeof AuthUserSignupRoute
   '/seller/addProduct': typeof SellerAddProductRoute
-  '/seller/comments': typeof SellerCommentsRoute
   '/seller/orders': typeof SellerOrdersRoute
-  '/seller/products': typeof SellerProductsRoute
+  '/seller/reviews': typeof SellerReviewsRoute
+  '/user/cart': typeof UserCartRoute
   '/seller/': typeof SellerIndexRoute
   '/user/': typeof UserIndexRoute
-  '/seller/product/$productId': typeof SellerProductProductIdRoute
+  '/seller/products/$productId': typeof SellerProductsProductIdRoute
+  '/seller/products': typeof SellerProductsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -110,12 +117,13 @@ export interface FileRoutesByTo {
   '/auth/SellerSignup': typeof AuthSellerSignupRoute
   '/auth/userSignup': typeof AuthUserSignupRoute
   '/seller/addProduct': typeof SellerAddProductRoute
-  '/seller/comments': typeof SellerCommentsRoute
   '/seller/orders': typeof SellerOrdersRoute
-  '/seller/products': typeof SellerProductsRoute
+  '/seller/reviews': typeof SellerReviewsRoute
+  '/user/cart': typeof UserCartRoute
   '/seller': typeof SellerIndexRoute
   '/user': typeof UserIndexRoute
-  '/seller/product/$productId': typeof SellerProductProductIdRoute
+  '/seller/products/$productId': typeof SellerProductsProductIdRoute
+  '/seller/products': typeof SellerProductsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -126,12 +134,13 @@ export interface FileRoutesById {
   '/auth/SellerSignup': typeof AuthSellerSignupRoute
   '/auth/userSignup': typeof AuthUserSignupRoute
   '/seller/addProduct': typeof SellerAddProductRoute
-  '/seller/comments': typeof SellerCommentsRoute
   '/seller/orders': typeof SellerOrdersRoute
-  '/seller/products': typeof SellerProductsRoute
+  '/seller/reviews': typeof SellerReviewsRoute
+  '/user/cart': typeof UserCartRoute
   '/seller/': typeof SellerIndexRoute
   '/user/': typeof UserIndexRoute
-  '/seller/product/$productId': typeof SellerProductProductIdRoute
+  '/seller/products/$productId': typeof SellerProductsProductIdRoute
+  '/seller/products/': typeof SellerProductsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -143,12 +152,13 @@ export interface FileRouteTypes {
     | '/auth/SellerSignup'
     | '/auth/userSignup'
     | '/seller/addProduct'
-    | '/seller/comments'
     | '/seller/orders'
-    | '/seller/products'
+    | '/seller/reviews'
+    | '/user/cart'
     | '/seller/'
     | '/user/'
-    | '/seller/product/$productId'
+    | '/seller/products/$productId'
+    | '/seller/products'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -156,12 +166,13 @@ export interface FileRouteTypes {
     | '/auth/SellerSignup'
     | '/auth/userSignup'
     | '/seller/addProduct'
-    | '/seller/comments'
     | '/seller/orders'
-    | '/seller/products'
+    | '/seller/reviews'
+    | '/user/cart'
     | '/seller'
     | '/user'
-    | '/seller/product/$productId'
+    | '/seller/products/$productId'
+    | '/seller/products'
   id:
     | '__root__'
     | '/'
@@ -171,12 +182,13 @@ export interface FileRouteTypes {
     | '/auth/SellerSignup'
     | '/auth/userSignup'
     | '/seller/addProduct'
-    | '/seller/comments'
     | '/seller/orders'
-    | '/seller/products'
+    | '/seller/reviews'
+    | '/user/cart'
     | '/seller/'
     | '/user/'
-    | '/seller/product/$productId'
+    | '/seller/products/$productId'
+    | '/seller/products/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -232,11 +244,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SellerIndexRouteImport
       parentRoute: typeof SellerRouteRoute
     }
-    '/seller/products': {
-      id: '/seller/products'
-      path: '/products'
-      fullPath: '/seller/products'
-      preLoaderRoute: typeof SellerProductsRouteImport
+    '/user/cart': {
+      id: '/user/cart'
+      path: '/cart'
+      fullPath: '/user/cart'
+      preLoaderRoute: typeof UserCartRouteImport
+      parentRoute: typeof UserRouteRoute
+    }
+    '/seller/reviews': {
+      id: '/seller/reviews'
+      path: '/reviews'
+      fullPath: '/seller/reviews'
+      preLoaderRoute: typeof SellerReviewsRouteImport
       parentRoute: typeof SellerRouteRoute
     }
     '/seller/orders': {
@@ -244,13 +263,6 @@ declare module '@tanstack/react-router' {
       path: '/orders'
       fullPath: '/seller/orders'
       preLoaderRoute: typeof SellerOrdersRouteImport
-      parentRoute: typeof SellerRouteRoute
-    }
-    '/seller/comments': {
-      id: '/seller/comments'
-      path: '/comments'
-      fullPath: '/seller/comments'
-      preLoaderRoute: typeof SellerCommentsRouteImport
       parentRoute: typeof SellerRouteRoute
     }
     '/seller/addProduct': {
@@ -274,11 +286,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSellerSignupRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/seller/product/$productId': {
-      id: '/seller/product/$productId'
-      path: '/product/$productId'
-      fullPath: '/seller/product/$productId'
-      preLoaderRoute: typeof SellerProductProductIdRouteImport
+    '/seller/products/': {
+      id: '/seller/products/'
+      path: '/products'
+      fullPath: '/seller/products'
+      preLoaderRoute: typeof SellerProductsIndexRouteImport
+      parentRoute: typeof SellerRouteRoute
+    }
+    '/seller/products/$productId': {
+      id: '/seller/products/$productId'
+      path: '/products/$productId'
+      fullPath: '/seller/products/$productId'
+      preLoaderRoute: typeof SellerProductsProductIdRouteImport
       parentRoute: typeof SellerRouteRoute
     }
   }
@@ -286,20 +305,20 @@ declare module '@tanstack/react-router' {
 
 interface SellerRouteRouteChildren {
   SellerAddProductRoute: typeof SellerAddProductRoute
-  SellerCommentsRoute: typeof SellerCommentsRoute
   SellerOrdersRoute: typeof SellerOrdersRoute
-  SellerProductsRoute: typeof SellerProductsRoute
+  SellerReviewsRoute: typeof SellerReviewsRoute
   SellerIndexRoute: typeof SellerIndexRoute
-  SellerProductProductIdRoute: typeof SellerProductProductIdRoute
+  SellerProductsProductIdRoute: typeof SellerProductsProductIdRoute
+  SellerProductsIndexRoute: typeof SellerProductsIndexRoute
 }
 
 const SellerRouteRouteChildren: SellerRouteRouteChildren = {
   SellerAddProductRoute: SellerAddProductRoute,
-  SellerCommentsRoute: SellerCommentsRoute,
   SellerOrdersRoute: SellerOrdersRoute,
-  SellerProductsRoute: SellerProductsRoute,
+  SellerReviewsRoute: SellerReviewsRoute,
   SellerIndexRoute: SellerIndexRoute,
-  SellerProductProductIdRoute: SellerProductProductIdRoute,
+  SellerProductsProductIdRoute: SellerProductsProductIdRoute,
+  SellerProductsIndexRoute: SellerProductsIndexRoute,
 }
 
 const SellerRouteRouteWithChildren = SellerRouteRoute._addFileChildren(
@@ -307,10 +326,12 @@ const SellerRouteRouteWithChildren = SellerRouteRoute._addFileChildren(
 )
 
 interface UserRouteRouteChildren {
+  UserCartRoute: typeof UserCartRoute
   UserIndexRoute: typeof UserIndexRoute
 }
 
 const UserRouteRouteChildren: UserRouteRouteChildren = {
+  UserCartRoute: UserCartRoute,
   UserIndexRoute: UserIndexRoute,
 }
 
